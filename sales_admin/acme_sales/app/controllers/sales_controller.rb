@@ -7,8 +7,15 @@ class SalesController < ApplicationController
   def index
     @sales = Sale.all
 
-    @total_sales = 0
-    @total_sales = @sales.each { |sale|  @total_sales += sale.quantity.to_d * sale.product.price.to_d}
+    @total_sales = calculate_total_sales(@sales)
+  end
+
+  def calculate_total_sales(sales)
+    total_sales = 0
+    @sales.each do |sale|
+      total_sales += sale.quantity.to_d * sale.product.price.to_d
+    end
+    return total_sales
   end
 
   def upload_sales
@@ -17,10 +24,6 @@ class SalesController < ApplicationController
     new_sales = []
 
     CSV.foreach(file, headers: true, header_converters: :symbol, converters: :all) do |row|
-      puts "THIS IS THE ROW #{row}"
-      # r = row.to_hash
-      puts "THIS IS THE MERCHANT #{row[:merchant_name]}"
-
       # create or update merchant
       m = Merchant.create_or_find_by(merchant_name: row[:merchant_name]) do |merchant|
         merchant.merchant_address = row[:merchant_address]
@@ -42,7 +45,6 @@ class SalesController < ApplicationController
         format.html { head :no_content, notice: "Upload failed"}
       end
     end
-    # success notice
   end
 
   # GET /sales/1
