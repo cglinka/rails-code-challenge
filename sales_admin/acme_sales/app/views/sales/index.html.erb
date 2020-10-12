@@ -2,9 +2,13 @@
 
 <h1>Sales</h1>
 
+<h3>Total Sales:</h3> <%= @total_sales %>
+<br><br><br>
+
 <table>
   <thead>
     <tr>
+      <th>Product</th>
       <th>Quantity</th>
       <th>Merchant</th>
       <th>Product</th>
@@ -15,12 +19,13 @@
   <tbody>
     <% @sales.each do |sale| %>
       <tr>
+        <td><%= sale.product.description %></td>
         <td><%= sale.quantity %></td>
         <td><%= sale.merchant_id %></td>
         <td><%= sale.product_id %></td>
-        <td><%= link_to 'Show', sale %></td>
-        <td><%= link_to 'Edit', edit_sale_path(sale) %></td>
-        <td><%= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%#= link_to 'Show', sale %></td>
+        <td><%#= link_to 'Edit', edit_sale_path(sale) %></td>
+        <td><%#= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,11 +33,10 @@
 
 <br>
 
-
 <%= form_tag({:action => :upload_sales}, :multipart => true) do %>
   <%= label_tag :csv, 'Upload sales data as CSV:'  %><br>
   <%= file_field_tag :csv %> <br>
   <%= button_tag "Upload" %>
 <% end %>
 
-# <%= link_to 'New Sale', new_sale_path %>
+<%#= link_to 'New Sale', new_sale_path %>
