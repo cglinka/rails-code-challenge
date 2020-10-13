@@ -18,67 +18,39 @@ class SalesController < ApplicationController
   end
 
   def upload_sales
-    file = params[:csv].tempfile
-    new_sales = []
-    CSV.foreach(file, headers: true, header_converters: :symbol, converters: :all) do |row|
-      # create or update merchant
-      m = Merchant.create_or_find_by(merchant_name: row[:merchant_name]) do |merchant|
-        merchant.merchant_address = row[:merchant_address]
-      end
-      # create or update customer
-      c = Customer.create_or_find_by(name: row[:customer_name])
-      # create or update product
-      p = Product.create_or_find_by(description: row[:item_description], price: row[:item_price])
-      # create sale
-      # s = Sale.new(merchant_id: m.id, customer_id: c.id, product_id: p.id, quantity: :quantity)
-      s = {merchant_id: m.id, customer_id: c.id, product_id: p.id, quantity: row[:quantity], created_at: Time.now, updated_at: Time.now}
-      new_sales.append(s)
-    end
+    if params[:csv]
+      file = params[:csv].tempfile
 
-    respond_to do |format|
-      if Sale.insert_all!(new_sales)
-        format.html { redirect_to sales_url, notice: "Upload successful"}
-      else
-        format.html { head :no_content, notice: "Upload failed"}
+      new_sales = []
+      CSV.foreach(file, headers: true, header_converters: :symbol, converters: :all) do |row|
+        # create or update merchant
+        m = Merchant.create_or_find_by(merchant_name: row[:merchant_name]) do |merchant|
+          merchant.merchant_address = row[:merchant_address]
+        end
+        # create or update customer
+        c = Customer.create_or_find_by(name: row[:customer_name])
+        # create or update product
+        p = Product.create_or_find_by(description: row[:item_description], price: row[:item_price])
+        # create sale
+        # s = Sale.new(merchant_id: m.id, customer_id: c.id, product_id: p.id, quantity: :quantity)
+        s = {merchant_id: m.id, customer_id: c.id, product_id: p.id, quantity: row[:quantity], created_at: Time.now, updated_at: Time.now}
+        new_sales.append(s)
       end
+
+      respond_to do |format|
+        if Sale.insert_all!(new_sales)
+          format.html { redirect_to sales_url, notice: "Upload successful"}
+        else
+          format.html { head :no_content, notice: "Upload failed"}
+        end
+      end
+    else
+      redirect_to sales_url, alert: "No file selected"
     end
   end
 
   # GET /sales/1
   def show
-  end
-
-  # GET /sales/new
-  def new
-    @sale = Sale.new
-  end
-
-  # GET /sales/1/edit
-  def edit
-  end
-
-  # POST /sales
-  def create
-    @sale = Sale.new(sale_params)
-
-    respond_to do |format|
-      if @sale.save
-        format.html { redirect_to @sale, notice: 'Sale was successfully created.' }
-      else
-        format.html { render :new }
-      end
-    end
-  end
-
-  # PATCH/PUT /sales/1
-  def update
-    respond_to do |format|
-      if @sale.update(sale_params)
-        format.html { redirect_to @sale, notice: 'Sale was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
-    end
   end
 
   # DELETE /sales/1

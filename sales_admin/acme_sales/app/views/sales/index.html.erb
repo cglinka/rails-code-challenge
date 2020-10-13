@@ -1,8 +1,9 @@
-
 <h1>Sales</h1>
 
-<h3>Total Sales:</h3> <%= @total_sales %>
-<br><br><br>
+<h3>Total Sales:</h3>
+<h4><%= number_to_currency(@total_sales, :unit => "$") %></h4>
+<hr>
+<br>
 
 <%= form_tag({:action => :upload_sales}, :multipart => true) do %>
   <%= label_tag :csv, 'Upload sales data as CSV:'  %><br>
@@ -10,8 +11,8 @@
   <%= button_tag "Upload" %>
 <% end %>
 <p>CSV required headers: Customer Name, Item Description, Item Price, Quantity, Merchant Name, Merchant Address</p>
-
-<br><br><br><br>
+<hr>
+<br>
 <table>
   <thead>
     <tr>
@@ -19,6 +20,7 @@
       <th>Customer</th>
       <th>Quantity</th>
       <th>Merchant</th>
+      <th>Sale Total</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -30,6 +32,7 @@
         <td><%= sale.customer.name %></td>
         <td><%= sale.quantity %></td>
         <td><%= sale.merchant.merchant_name %></td>
+        <td><%= number_to_currency(sale.product.price * sale.quantity, :unit => "$") %></td>
         <td><%= link_to 'Show', sale %></td>
         <td><%= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

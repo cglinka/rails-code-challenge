@@ -14,14 +14,7 @@
       <tr>
         <td><%= merchant.merchant_name %></td>
         <td><%= merchant.merchant_address %></td>
-        <td><%= link_to 'Show', merchant %></td>
-        <td><%= link_to 'Edit', edit_merchant_path(merchant) %></td>
-        <td><%= link_to 'Destroy', merchant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Merchant', new_merchant_path %>

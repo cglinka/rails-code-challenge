@@ -5,13 +5,22 @@
 
 <p>
   <strong>Merchant:</strong>
-  <%= @sale.merchant_id %>
+  <%= @sale.merchant.merchant_name %>
 </p>
 
 <p>
   <strong>Product:</strong>
-  <%= @sale.product_id %>
+  <%= @sale.product.description %>
 </p>
 
-<%= link_to 'Edit', edit_sale_path(@sale) %> |
+<p>
+  <strong>Price:</strong>
+  <%= number_to_currency(@sale.product.price, :unit => "$") %>
+</p>
+
+<p>
+  <strong>Customer:</strong>
+  <%= @sale.customer.name %>
+</p>
+
 <%= link_to 'Back', sales_path %>

@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+Run the following series of commands:
 
-* Ruby version
+```docker-compose up --build -d```
 
-* System dependencies
+```docker-compose run web bundle exec rake db:create db:migrate db:seed```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+The app can be accessed at `localhost:3000`. Default login is `default@acme.com` and `password`.
