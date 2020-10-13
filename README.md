@@ -1,5 +1,11 @@
-# Megaphone Code Challenges
+# README
 
-Hi, welcome to the Megaphone code challenges repo. We have the following challenges:
-* [Sales Admin](https://github.com/panoplymedia/challenges/tree/master/sales_admin)
-* [Log Processing](https://github.com/panoplymedia/challenges/tree/master/log_processing)
+## Setup
+
+Run the following series of commands:
+
+```docker-compose up --build -d```
+
+```docker-compose run web bundle exec rake db:create db:migrate db:seed```
+
+The app can be accessed at `localhost:3000`. Default login is `default@acme.com` and `password`.
